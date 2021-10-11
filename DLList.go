@@ -92,20 +92,34 @@ func (dl *DList) popFront() {
 	dl.first, dl.first.prev = dl.first.next, nil
 }
 
-func (dl *DList) remove(i uint32) {
-	if i> dl.size {
+func (dl *DList) remove(place uint32) {
+	if place > dl.size {
 		fmt.Println("U did fuck up this")
 		return
 	}
 	
-	if i== 0 {
+	if place == 0 {
 		dl.popFront()
 		return
 	}
 	
-	if i== dl.size {
+	if place  == dl.size {
 		dl.popBack()
 		return
+	}
+	if dl.size == 0 {
+		fmt.Println("no puedes hacer eso, amigo")
+	} else {
+		var n *Node
+		n = dl.first
+		for i := uint32(0); i < dl.size; i++ {
+			if i == place-1 {
+				break
+			}
+			n = n.next
+		}
+		n.prev.next, n.next.prev = n.next, n.prev
+		dl.size--
 	}
 }
 
@@ -131,10 +145,9 @@ func main() {
 	dl.pushBack(5)
 	dl.pushFront(56)
 	dl.pushFront(56)
-	dl.insert(66, 0)
+	dl.insert(66, 5)
 	dl.printList()
-	fmt.Println("SDF")
-	dl.popFront()
+	dl.remove(2)
 	dl.printList()
 
 }
